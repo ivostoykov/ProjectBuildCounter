@@ -1,0 +1,4 @@
+h:\Projects\sd\ProjectBuildCounter\ProjectBuildCounter\obj\Release\ProjectBuildCounter.csprojResolveAssemblyReference.cache
+h:\Projects\sd\ProjectBuildCounter\ProjectBuildCounter\bin\Release\ProjectBuildCounter.exe.config
+h:\Projects\sd\ProjectBuildCounter\ProjectBuildCounter\bin\Release\ProjectBuildCounter.exe
+h:\Projects\sd\ProjectBuildCounter\ProjectBuildCounter\obj\Release\ProjectBuildCounter.exe

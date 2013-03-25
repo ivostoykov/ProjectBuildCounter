@@ -1,0 +1,6 @@
+h:\Projects\sd\ProjectBuildCounter\ProjectBuildCounter\obj\Debug\ProjectBuildCounter.csprojResolveAssemblyReference.cache
+h:\Projects\sd\ProjectBuildCounter\ProjectBuildCounter\bin\Debug\ProjectBuildCounter.exe.config
+h:\Projects\sd\ProjectBuildCounter\ProjectBuildCounter\bin\Debug\ProjectBuildCounter.exe
+h:\Projects\sd\ProjectBuildCounter\ProjectBuildCounter\bin\Debug\ProjectBuildCounter.pdb
+h:\Projects\sd\ProjectBuildCounter\ProjectBuildCounter\obj\Debug\ProjectBuildCounter.exe
+h:\Projects\sd\ProjectBuildCounter\ProjectBuildCounter\obj\Debug\ProjectBuildCounter.pdb
