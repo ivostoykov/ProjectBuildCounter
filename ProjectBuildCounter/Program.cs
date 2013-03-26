@@ -26,66 +26,59 @@ namespace ProjectBuildCounter
     ///</param>
     static int Main(string[] args)
     {
-      String sLine;
-      StringBuilder sb = new StringBuilder();
       #region [args[] check & test]
       if (args.Length < 1)
       {
         args = new string[1];
-        args[0] = "AssemblyInfo.cs";
-      }  // asume file is in the same folder
+        args[0] = "AssemblyInfo.cs";  // asume file is in the same folder
+      }
       if (!File.Exists(args[0]))
-      {	//exists the file?
+      {
         Console.Write("File [{0}] not found", args[0]);
-        return -2;
+        return -1;
       }
       #endregion
       #region open, read and save cs file
       try
       {			//get and read all lines
-        using (StreamReader reader = new StreamReader(args[0], System.Text.Encoding.UTF8))
+        String[] contents = File.ReadAllLines(args[0], Encoding.UTF8);
+        for (int x = 0; x < contents.Length; x++)
         {
-          while ((sLine = reader.ReadLine()) != null)
-          {
-            if (!sLine.Contains("AssemblyVersion") && !sLine.Contains("AssemblyFileVersion"))
-            {
-              sb.AppendLine(sLine);
-              continue;
-            }
-            //String sNums = (new Regex(@"[^\d\.\*]")).Replace(sLine.Replace('*', '0'), ""); // get version numbers
-            sLine = sLine.Replace('*', '0');
-            String sNums = Regex.Replace(sLine, @"[^\d\.\*]", ""); // get version numbers
-            List<String> iNums = sNums.Split(new char[] { '.' }).ToList<String>(); // Regex.Split(sNums, ".");
-            if (iNums.Count < 4) 
-            {
-              for (int x = iNums.Count; x < 4; x++) {  iNums.Add("0"); }
-            }
-            iNums[2] = (Convert.ToInt32(iNums[2]) + 1).ToString();
-            if (Convert.ToInt32(iNums[2]) > 9999)
-            {
-              iNums[2] = "1";
-              iNums[1] = (Convert.ToInt32(iNums[1]) + 1).ToString();
-              if (Convert.ToInt32(iNums[0]) > 99)
-              {
-                iNums[1] = "1";
-                iNums[0] = (Convert.ToInt32(iNums[0]) + 1).ToString();
-              }
-            }
-            sb.AppendLine(sLine.Replace(sNums, String.Join(".", iNums)));
-          }
+          if (!contents[x].Contains("AssemblyVersion") && !contents[x].Contains("AssemblyFileVersion")) { continue; }  
+          contents[x] = contents[x].Replace('*', '0');  // some files have * instead of build figure
+          String sNums = Regex.Replace(contents[x], @"[^\d\.\*]", ""); // get version numbers
+          contents[x] = contents[x].Replace(sNums, Increment(sNums)); // replace old with new version
         }
-        using (StreamWriter sr = new StreamWriter(new FileStream(args[0], FileMode.OpenOrCreate), System.Text.Encoding.UTF8))
-        {
-          sr.WriteLine(sb.ToString());
-        }
-      #endregion
+        File.WriteAllLines(args[0], contents, Encoding.UTF8); // save file
       }
-      catch (Exception ex)
+      catch (Exception e)
       {
-        Console.Write("Error: {0}", ex.Message);
-        return -4;
+        TextWriter errWriter = Console.Error;
+        EventLog evlog = new EventLog("Application", Environment.MachineName, AppDomain.CurrentDomain.FriendlyName);
+        errWriter.WriteLine("(Reading File) Exception thrown: " + e);
+        evlog.WriteEntry("(Reading File) Exception thrown: " + e.Message, EventLogEntryType.Error);
+        return -2;
       }
+      #endregion
       return 0;
+    }
+
+    private static string Increment( String sNums )
+    {
+      List<Int32> iNums = sNums.Split(new char[] { '.' }).ToList<String>().ConvertAll(el => Convert.ToInt32(el)); // split for easier manipulation
+      for (int i = iNums.Count; i < 4; i++) { iNums.Add(0); } // add lacking versions - There must be 4 numbers: Major, Minor, Build, Release
+      iNums[2] += 1;
+      if (iNums[2] > 9999) // build version
+      {
+        iNums[2] = 1;
+        iNums[1] += 1;
+        if (iNums[0] > 99) // Minor version
+        {
+          iNums[1] = 1;
+          iNums[0] += 1;
+        }
+      }
+      return String.Join(".", iNums.ConvertAll(el => el.ToString()).ToArray<String>());
     }
   }
 }

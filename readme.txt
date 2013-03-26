@@ -9,3 +9,11 @@ ProjectBuildCounter reads AssemblyInfo.cs file and increments versions using fol
 * Build number (3rd position) is incremented from 1 to 9999. When it goes beyond previous number (Minor) is incremented and build counter is set to one
 * Minor is incremented from 1 to 99. When it goes beyond 99 previous number (Major) is incremented.
 * Revision - last (4th) number - whenever it exists or not, for the moment is not manipulated.
+
+Changes in ProjectBuildCounter 1.0.42.1934
+==========================================
+
+New fearures
+------------
+
+* Write in Event Log in case of execution error
