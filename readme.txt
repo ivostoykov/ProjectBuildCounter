@@ -6,14 +6,34 @@ This tool manipulates Properties\AssemblyInfo.cs file of a project. As the file 
 
 ProjectBuildCounter reads AssemblyInfo.cs file and increments versions using following logic:
 
-* Build number (3rd position) is incremented from 1 to 9999. When it goes beyond previous number (Minor) is incremented and build counter is set to one
-* Minor is incremented from 1 to 99. When it goes beyond 99 previous number (Major) is incremented.
-* Revision - last (4th) number - whenever it exists or not, for the moment is not manipulated.
+* Revision number (4th position) is incremented from 1 to 9999. When exceed the upper bound Build number is incremented and Release is reset to one.
+* Build number (3rd position) is incremented from 1 to 999. When it goes beyond previous number (Minor) is incremented and build counter is reset to one.
+* Minor is incremented from 1 to 99. When current number goes above 99 Major is incremented and Minor is reset to one.
+
+
+Changes in ProjectBuildCounter 1.0.101.1858
+===========================================
+New features
+------------
+
+* Added second parameter allowing to increment particular part of the version - Major, Minor, Build or Release.
+
+
+
+Changes in ProjectBuildCounter 1.0.68.718
+=========================================
+
+New features
+------------
+
+* Incrementing method made recursive avoiding multiple choices.
+
+
 
 Changes in ProjectBuildCounter 1.0.42.1934
 ==========================================
 
-New fearures
+New features
 ------------
 
-* Write in Event Log in case of execution error
+* Record errors with the Windows Event Log

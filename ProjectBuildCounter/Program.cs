@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -18,39 +19,37 @@ namespace ProjectBuildCounter
 {
   class Program
   {
+    static List<String> _args;
+    static int startVerNum = 3;
     /// <summary>
     /// This function will incriment versions. Builds are counted from 1 to 9999, Minor: from 1 to 99
     /// </summary>
     /// <param name="args">
     /// Command Line Arguments:
-    /// 0 - Path to application manifest (.exe.manifest).
+    /// 0 - Path to AssemblyInfo.cs.
+    /// 1 - version to start incrementation from
     ///</param>
     static int Main(string[] args)
     {
       #region [args[] check & test]
-      if (args.Length < 1)
+      InputInit(args);
+      if (!_args[0].Contains("AssemblyInfo.cs")) { _args[0] = Path.Combine(_args[0], "AssemblyInfo.cs"); } // only folder name supplied
+      if (!File.Exists(_args[0]))
       {
-        args = new string[1];
-        args[0] = "AssemblyInfo.cs";  // asume file is in the same folder
-      }
-      if (!File.Exists(args[0]))
-      {
-        Console.Write("File [{0}] not found", args[0]);
+        Console.Write("File [{0}] not found", _args[0]);
         return -1;
       }
       #endregion
       #region open, read and save cs file
-      try
-      {			//get and read all lines
-        String[] contents = File.ReadAllLines(args[0], Encoding.UTF8);
+      try   
+      {
+        String[] contents = File.ReadAllLines(_args[0], Encoding.UTF8);
         for (int x = 0; x < contents.Length; x++)
         {
-          if (!contents[x].Contains("AssemblyVersion") && !contents[x].Contains("AssemblyFileVersion")) { continue; }  
-          contents[x] = contents[x].Replace('*', '0');  // some files have * instead of build figure
-          String sNums = Regex.Replace(contents[x], @"[^\d\.\*]", ""); // get version numbers
-          contents[x] = contents[x].Replace(sNums, Increment(sNums)); // replace old with new version
+          if (!contents[x].Contains("AssemblyVersion") && !contents[x].Contains("AssemblyFileVersion")) { continue; }
+          contents[x] = ChangeVersion(contents[x]);
         }
-        File.WriteAllLines(args[0], contents, Encoding.UTF8); // save file
+        File.WriteAllLines(_args[0], contents, Encoding.UTF8); // save file
       }
       catch (Exception e)
       {
@@ -64,22 +63,55 @@ namespace ProjectBuildCounter
       return 0;
     }
 
-    private static string Increment( String sNums )
+    /// <summary>
+    /// check input and fill missing arguments
+    /// </summary>
+    /// <param name="args">command line input arguments</param>
+    private static void InputInit(string[] args)
     {
-      List<Int32> iNums = sNums.Split(new char[] { '.' }).ToList<String>().ConvertAll(el => Convert.ToInt32(el)); // split for easier manipulation
-      for (int i = iNums.Count; i < 4; i++) { iNums.Add(0); } // add lacking versions - There must be 4 numbers: Major, Minor, Build, Release
-      iNums[2] += 1;
-      if (iNums[2] > 9999) // build version
+      _args = args.ToList<String>();
+      if (_args.Count < 1) { _args.Add("AssemblyInfo.cs"); }
+      if (_args.Count == 1) { _args.Add("R"); } // default version number to start incrementation from
+      switch(_args[1])
       {
-        iNums[2] = 1;
-        iNums[1] += 1;
-        if (iNums[0] > 99) // Minor version
-        {
-          iNums[1] = 1;
-          iNums[0] += 1;
-        }
+        case "M": startVerNum = 0; break;
+        case "m": startVerNum = 1; break;
+        case "b":
+        case "B": startVerNum = 2; break;
+        default:  startVerNum = 3; break; // default number to incrementat is Release
       }
-      return String.Join(".", iNums.ConvertAll(el => el.ToString()).ToArray<String>());
+    }
+
+    /// <summary>
+    /// Transforms version string into <seealso cref="System.Int32"/> increment numbers and return back the new numbers as a string
+    /// </summary>
+    /// <param name="str">Current version number as a <see cref="System.String"/></param>
+    /// <returns><see cref="System.String"/> with the new version number</returns>
+    private static String ChangeVersion(String str)
+    {
+      str = str.Replace('*', '0');  // some files have * instead of build figure
+      String sNums = Regex.Replace(str, @"[^\d\.\*]", ""); // get version numbers
+      int[] v = Array.ConvertAll<String, Int32>(sNums.Split('.'), e => Convert.ToInt32(e));
+      //Increment(ref v, v.Length - 2);
+      Increment(ref v, startVerNum);
+      return str.Replace(sNums, String.Join(".", Array.ConvertAll<Int32, String>(v, e => e.ToString()))); // replace old with new version
+    }
+
+    /// <summary>
+    /// Recursively increment version mubers starting from right to left.
+    /// </summary>
+    /// <param name="ver">array with versions. Zero indexed is Major. Max indexed (3) is Release</param>
+    /// <param name="idx">Starting number - from bigger to smaller</param>
+    private static void Increment(ref int[] ver, int idx)
+    {
+      int maxVal = Convert.ToInt32(new String('9', idx + 1));
+      if (ver[idx] + 1 > maxVal)
+      {
+        Increment(ref ver, idx - 1);
+        ver[idx] = 1;
+        return;
+      }
+      ver[idx]++;
     }
   }
 }
