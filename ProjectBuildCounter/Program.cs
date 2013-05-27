@@ -99,7 +99,6 @@ namespace ProjectBuildCounter
       str = str.Replace('*', '0');  // some files have * instead of build figure
       String sNums = Regex.Replace(str, @"[^\d\.]", ""); // get version numbers
       int[] v = Array.ConvertAll<String, Int32>(sNums.Split(new [] { '.' }, StringSplitOptions.RemoveEmptyEntries), e => Convert.ToInt32(e));
-      //Increment(ref v, v.Length - 2);
       Increment(ref v, startVerNum);
       return str.Replace(sNums, String.Join(".", Array.ConvertAll<Int32, String>(v, e => e.ToString()))); // replace old with new version
     }
