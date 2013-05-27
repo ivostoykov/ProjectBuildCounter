@@ -123,7 +123,6 @@ namespace ProjectBuildCounter
         ver[idx]++;
       } catch(Exception e)
       {
-//        Increment(ref ver, idx - 1);
         EventLog evlog = new EventLog("Application", Environment.MachineName, AppDomain.CurrentDomain.FriendlyName);
         evlog.WriteEntry("(Reading File) Exception thrown: " + e.Message, EventLogEntryType.Error);
         return;
