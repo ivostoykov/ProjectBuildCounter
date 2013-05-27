@@ -13,6 +13,17 @@ ProjectBuildCounter reads AssemblyInfo.cs file and increments versions using fol
 
 Changes in ProjectBuildCounter 1.0.101.1858
 ===========================================
+Added
+-----
+* Error registered in system event log (available through Event Log)
+* New parameter allowing to skip file version incrementation
+
+Bugs
+----
+* bug fixed for version with less than four numbers
+
+Changes in ProjectBuildCounter 1.0.101.1858
+===========================================
 New features
 ------------
 
