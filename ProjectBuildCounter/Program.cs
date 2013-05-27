@@ -21,6 +21,7 @@ namespace ProjectBuildCounter
   {
     static List<String> _args;
     static int startVerNum = 3;
+    static bool _noFileVer = false; // if true - file version won't be incremented
     /// <summary>
     /// This function will incriment versions. Builds are counted from 1 to 9999, Minor: from 1 to 99
     /// </summary>
@@ -28,14 +29,18 @@ namespace ProjectBuildCounter
     /// Command Line Arguments:
     /// 0 - Path to AssemblyInfo.cs.
     /// 1 - version to start incrementation from
+    /// 2 - nofile - indicating to skip file version incrementation
     ///</param>
     static int Main(string[] args)
     {
       #region [args[] check & test]
+      if(args.Length == 0) {  return 0;  }
       InputInit(args);
       if (!_args[0].Contains("AssemblyInfo.cs")) { _args[0] = Path.Combine(_args[0], "AssemblyInfo.cs"); } // only folder name supplied
       if (!File.Exists(_args[0]))
       {
+        EventLog evlog = new EventLog("Application", Environment.MachineName, AppDomain.CurrentDomain.FriendlyName);
+        evlog.WriteEntry(String.Format("File [{0}] not found", _args[0]), EventLogEntryType.Error);
         Console.Write("File [{0}] not found", _args[0]);
         return -1;
       }
@@ -72,6 +77,7 @@ namespace ProjectBuildCounter
       _args = args.ToList<String>();
       if (_args.Count < 1) { _args.Add("AssemblyInfo.cs"); }
       if (_args.Count == 1) { _args.Add("R"); } // default version number to start incrementation from
+      if(_args.Count == 3) { _noFileVer = _args[2].ToLower().Equals("nofile");  } // if 3rd parameter supplied must be 'nofile'
       switch(_args[1])
       {
         case "M": startVerNum = 0; break;
@@ -89,9 +95,10 @@ namespace ProjectBuildCounter
     /// <returns><see cref="System.String"/> with the new version number</returns>
     private static String ChangeVersion(String str)
     {
+      if(_noFileVer && str.Contains("AssemblyFileVersion")) {  return str;  }  // flag prohibiting file version incrementation is set
       str = str.Replace('*', '0');  // some files have * instead of build figure
-      String sNums = Regex.Replace(str, @"[^\d\.\*]", ""); // get version numbers
-      int[] v = Array.ConvertAll<String, Int32>(sNums.Split('.'), e => Convert.ToInt32(e));
+      String sNums = Regex.Replace(str, @"[^\d\.]", ""); // get version numbers
+      int[] v = Array.ConvertAll<String, Int32>(sNums.Split(new [] { '.' }, StringSplitOptions.RemoveEmptyEntries), e => Convert.ToInt32(e));
       //Increment(ref v, v.Length - 2);
       Increment(ref v, startVerNum);
       return str.Replace(sNums, String.Join(".", Array.ConvertAll<Int32, String>(v, e => e.ToString()))); // replace old with new version
@@ -105,13 +112,22 @@ namespace ProjectBuildCounter
     private static void Increment(ref int[] ver, int idx)
     {
       int maxVal = Convert.ToInt32(new String('9', idx + 1));
-      if (ver[idx] + 1 > maxVal)
+      try 
       {
-        Increment(ref ver, idx - 1);
-        ver[idx] = 1;
+        if (ver[idx] + 1 > maxVal)
+        {
+          Increment(ref ver, idx - 1);
+          ver[idx] = 1;
+          return;
+        }
+        ver[idx]++;
+      } catch(Exception e)
+      {
+//        Increment(ref ver, idx - 1);
+        EventLog evlog = new EventLog("Application", Environment.MachineName, AppDomain.CurrentDomain.FriendlyName);
+        evlog.WriteEntry("(Reading File) Exception thrown: " + e.Message, EventLogEntryType.Error);
         return;
       }
-      ver[idx]++;
     }
   }
 }
