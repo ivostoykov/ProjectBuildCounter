@@ -11,6 +11,12 @@ ProjectBuildCounter reads AssemblyInfo.cs file and increments versions using fol
 * Minor is incremented from 1 to 99. When current number goes above 99 Major is incremented and Minor is reset to one.
 
 
+Changes in ProjectBuildCounter 1.0.170.000
+==========================================
+Added
+-----
+* AssemblyInformationalVersion increment if exists
+
 Changes in ProjectBuildCounter 1.0.154.231
 ==========================================
 Added

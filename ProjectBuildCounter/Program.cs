@@ -51,7 +51,7 @@ namespace ProjectBuildCounter
         String[] contents = File.ReadAllLines(_args[0], Encoding.UTF8);
         for (int x = 0; x < contents.Length; x++)
         {
-          if (!contents[x].Contains("AssemblyVersion") && !contents[x].Contains("AssemblyFileVersion")) { continue; }
+          if (!contents[x].Contains("AssemblyVersion") && !contents[x].Contains("AssemblyFileVersion") && !contents[x].Contains("AssemblyInformationalVersion")) { continue; }
           contents[x] = ChangeVersion(contents[x]);
         }
         File.WriteAllLines(_args[0], contents, Encoding.UTF8); // save file

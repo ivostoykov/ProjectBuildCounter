@@ -38,7 +38,8 @@
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <StartAction>Project</StartAction>
-    <StartArguments>"f:\test folder\another test folder\AssemblyInfo.cs" B nofile</StartArguments>
+    <StartArguments>f:\AssemblyInfo.cs B nofile</StartArguments>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputPath>bin\Release\</OutputPath>
