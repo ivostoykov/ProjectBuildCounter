@@ -11,11 +11,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ProjectBuildCounter")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("ProjectBuildCounter changes VisualStudio prijects assembly version")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Ivo Stoykov")]
 [assembly: AssemblyProduct("ProjectBuildCounter")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCopyright("Copyright ©  2013-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -30,5 +30,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can use the default the Revision and 
 // Build Numbers by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.0.170.0")]
-[assembly: AssemblyFileVersion("1.0.9.0")]
+[assembly: AssemblyVersion("1.0.196.0")]
+[assembly: AssemblyFileVersion("1.0.10.0")]

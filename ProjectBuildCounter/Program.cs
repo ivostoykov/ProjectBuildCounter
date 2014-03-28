@@ -122,8 +122,11 @@ namespace ProjectBuildCounter
         ver[idx]++;
       } catch(Exception e)
       {
-        EventLog evlog = new EventLog("Application", Environment.MachineName, AppDomain.CurrentDomain.FriendlyName);
-        evlog.WriteEntry("(Reading File) Exception thrown: " + e.Message, EventLogEntryType.Error);
+        try {
+//          EventLog evlog = new EventLog("Application", Environment.MachineName, AppDomain.CurrentDomain.FriendlyName);
+//          evlog.WriteEntry("Exception thrown: " + e.Message, EventLogEntryType.Error);
+          (new EventLog("Application", Environment.MachineName, AppDomain.CurrentDomain.FriendlyName)).WriteEntry("Exception thrown: " + e.Message, EventLogEntryType.Error);
+        } catch (Exception ex) {      }
         return;
       }
     }

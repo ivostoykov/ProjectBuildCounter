@@ -11,46 +11,57 @@ ProjectBuildCounter reads AssemblyInfo.cs file and increments versions using fol
 * Minor is incremented from 1 to 99. When current number goes above 99 Major is incremented and Minor is reset to one.
 
 
+Changes in ProjectBuildCounter 1.0.196
+======================================
+  Added
+  -----
+  * New help file added.
+  * Documentation updated
+
+  Bugs
+  ----
+  * bug with EventLog access priviliges fixed
+
 Changes in ProjectBuildCounter 1.0.170.000
 ==========================================
-Added
------
-* AssemblyInformationalVersion increment if exists
+  Added
+  -----
+  * AssemblyInformationalVersion increment if exists
 
 Changes in ProjectBuildCounter 1.0.154.231
 ==========================================
-Added
------
-* Error registered in system event log (available through Event Log)
-* New parameter allowing to skip file version incrementation
+  Added
+  -----
+  * Error registered in system event log (available through Event Log)
+  * New parameter allowing to skip file version incrementation
 
-Bugs
-----
-* bug fixed for version with less than four numbers
+  Bugs
+  ----
+  * bug fixed for version with less than four numbers
 
 Changes in ProjectBuildCounter 1.0.101.1858
 ===========================================
-New features
-------------
+  New features
+  ------------
 
-* Added second parameter allowing to increment particular part of the version - Major, Minor, Build or Release.
+  * Added second parameter allowing to increment particular part of the version - Major, Minor, Build or Release.
 
 
 
 Changes in ProjectBuildCounter 1.0.68.718
 =========================================
 
-New features
-------------
+  New features
+  ------------
 
-* Incrementing method made recursive avoiding multiple choices.
+  * Incrementing method made recursive avoiding multiple choices.
 
 
 
 Changes in ProjectBuildCounter 1.0.42.1934
 ==========================================
 
-New features
-------------
+  New features
+  ------------
 
-* Record errors with the Windows Event Log
+  * Record errors with the Windows Event Log
