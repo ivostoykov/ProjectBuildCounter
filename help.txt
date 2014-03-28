@@ -1,0 +1,40 @@
+SYNOPSIS
+  ProjectBuildCounter.exe AssemblyInfo.cs [options]
+
+DESCRIPTION  
+  ProjectBuildCounter changes VisualStudio assembly version
+
+OPTIONS
+
+  Options are use to define which part counter will start with. Acceptable options are:
+
+    M
+      Major
+    m
+      Minor
+    B
+      Build
+    R
+      release
+    nofile
+      if supplied AssemblyFileVersion won't be incremented
+
+
+USAGE
+
+  ProjectBuildCounter should be placed in priject properties' Build Events.
+  Command usually is placed in Post-build event command line in following format:
+
+    ProjectBuildCounter.exe AssemblyInfo.cs [options]
+
+  ProjectBuildCounter changes following properties:
+    * AssemblyVersion
+    * AssemblyFileVersion (unless nofile supplied)
+    * AssemblyInformationalVersion
+
+EXAMPLES
+
+MORE
+  Some videos might be found here:
+  http://www.youtube.com/watch?v=macLx-i6syA
+  http://www.youtube.com/watch?v=WuD7jpQmYck
