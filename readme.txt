@@ -1,14 +1,25 @@
-ProjectBuildCounter is a small utility that auto increments the build number of Visual Studio projects. Increment is made on each build nevertheless it is Debug or Release.
+ProjectBuildCounter is a small utility that auto increments the build
+number of Visual Studio projects.
+Increment is made on each build nevertheless it is Debug or Release.
+View help.txt for HOWTO.
 
-This tool manipulates Properties\AssemblyInfo.cs file of a project. As the file name assume it contains somewhere in the contents the product version. It has following form Major, Minor, Build and Release as shown below:
+This tool manipulates Properties\AssemblyInfo.cs file of a project. 
+As the file name assume it contains somewhere in the contents the 
+product version. It has following form Major, Minor, Build and 
+Release as shown below:
 
   [assembly: AssemblyVersion("1.0.13.2165")]
 
 ProjectBuildCounter reads AssemblyInfo.cs file and increments versions using following logic:
 
-* Revision number (4th position) is incremented from 1 to 9999. When exceed the upper bound Build number is incremented and Release is reset to one.
-* Build number (3rd position) is incremented from 1 to 999. When it goes beyond previous number (Minor) is incremented and build counter is reset to one.
-* Minor is incremented from 1 to 99. When current number goes above 99 Major is incremented and Minor is reset to one.
+  * Revision number (4th position) is incremented from 1 to 9999.
+    When exceed the upper bound Build number is incremented and 
+    Release is reset to one.
+  * Build number (3rd position) is incremented from 1 to 999. 
+    When it goes beyond previous number (Minor) is incremented
+    and build counter is reset to one.
+  * Minor is incremented from 1 to 99. When current number goes
+    above 99 Major is incremented and Minor is reset to one.
 
 
 Changes in ProjectBuildCounter 1.0.196
@@ -44,7 +55,8 @@ Changes in ProjectBuildCounter 1.0.101.1858
   New features
   ------------
 
-  * Added second parameter allowing to increment particular part of the version - Major, Minor, Build or Release.
+  * Added second parameter allowing to increment particular part of 
+    the version - Major, Minor, Build or Release.
 
 
 

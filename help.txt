@@ -1,7 +1,9 @@
 SYNOPSIS
+
   ProjectBuildCounter.exe AssemblyInfo.cs [options]
 
 DESCRIPTION  
+
   ProjectBuildCounter changes VisualStudio assembly version
 
 OPTIONS
@@ -27,12 +29,21 @@ USAGE
 
     ProjectBuildCounter.exe AssemblyInfo.cs [options]
 
+  NOTE: Each part having spaces in path must be surrounded with double quotes
+
   ProjectBuildCounter changes following properties:
     * AssemblyVersion
     * AssemblyFileVersion (unless nofile supplied)
     * AssemblyInformationalVersion
 
 EXAMPLES
+  "D:\full path to\ProjectBuildCounter.exe" $(ProjectDir)\AssemblyInfo.cs
+
+    if ProjectDir has space in the path then it also must be surrounded with double quotes:
+  "D:\full path to\ProjectBuildCounter.exe" "$(ProjectDir)\AssemblyInfo.cs"
+
+    to bypass AssemblyFileVersion increment add -nofile option:
+  "D:\full path to\ProjectBuildCounter.exe" "$(ProjectDir)\AssemblyInfo.cs" -nofile
 
 MORE
   Some videos might be found here:
