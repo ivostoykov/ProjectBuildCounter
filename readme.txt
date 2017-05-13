@@ -1,5 +1,5 @@
 ProjectBuildCounter is a small utility that auto increments the build
-number of Visual Studio projects.
+number of C# and VB.NET Visual Studio projects.
 Increment is made on each build nevertheless it is Debug or Release.
 View help.txt for HOWTO.
 
